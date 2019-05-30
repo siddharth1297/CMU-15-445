@@ -12,6 +12,9 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <map>
+#include <memory>
+#include <mutex>
 
 #include "hash/hash_table.h"
 
@@ -35,5 +38,19 @@ public:
 
 private:
   // add your own member variables here
+  const size_t bucketSizeLimit;
+  int globalDepth;
+
+  class Bucket {
+  public:
+    int localDepth;
+    std::map<K, V>items;
+    Bucket(int depth): localDepth(depth) {}
+  };
+
+  std::vector<std::shared_ptr<Bucket>> bucketDirectory;
+  std::shared_ptr<Bucket> getBucket(const K &key);
+  
+  std::mutex mtx;
 };
 } // namespace cmudb
