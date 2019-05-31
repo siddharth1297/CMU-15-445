@@ -11,6 +11,9 @@
 
 #include "buffer/replacer.h"
 #include "hash/extendible_hash.h"
+#include <unordered_map>
+#include <list>
+#include <mutex>
 
 namespace cmudb {
 
@@ -31,6 +34,9 @@ public:
 
 private:
   // add your member variables here
+  std::list<T>lst;
+  std::unordered_map<T, typename std::list<T>::iterator> map;
+  std::mutex mtx;
 };
 
 } // namespace cmudb
